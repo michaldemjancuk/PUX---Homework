@@ -1,7 +1,11 @@
+using NLog.Web;
 using PuxHomework.Models.Configuration;
 using PuxHomework.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
 
 // Add services to the container.
 builder.Services.AddScoped<IFileComparerService, FileComparerService>();
