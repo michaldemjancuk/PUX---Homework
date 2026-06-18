@@ -11,10 +11,12 @@ public class HomeController(IFileComparerService fileComparerService) : Controll
     private readonly IFileComparerService _fileComparerService = fileComparerService;
 
     [HttpGet(Name = "Index")]
-    [ProducesResponseType(typeof(IEnumerable<HomeIndexResponseModel>), 200)]
+    [ProducesResponseType(typeof(HomeIndexResponseModel), 200)]
     [ProducesResponseType(500)]
-    public HomeIndexResponseModel Get()
+    public HomeIndexResponseModel Get(string folderPath = "C:\\Temp\\")
     {
-        throw new NotImplementedException("Yet to be implemented");
+        HomeIndexResponseModel result = _fileComparerService.CompareFiles(folderPath);
+
+        return new HomeIndexResponseModel();
     }
 }
