@@ -1,6 +1,14 @@
+using PuxHomework.Models.Configuration;
+using PuxHomework.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IFileComparerService, FileComparerService>();
+builder.Services.AddScoped<IMd5CalculatorService, Md5CalculatorService>();
+
+// Configurations
+builder.Services.Configure<FileComparerConfigurationModel>(builder.Configuration.GetSection("FileComparer"));
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
