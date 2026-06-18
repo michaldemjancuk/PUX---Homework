@@ -2,9 +2,9 @@
 
 public enum FileStatusEnum
 {
-    New,
-    Updated,
-    Deleted,
-    Unchanged,
-    Unknown
+    New = 0,
+    Updated = 1,
+    Deleted = 2,
+    Unchanged = 3,
+    Unknown = 4
 }

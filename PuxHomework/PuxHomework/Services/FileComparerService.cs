@@ -26,24 +26,42 @@ public class FileComparerService(IOptions<FileComparerConfigurationModel> config
         string[] existingFolders = GetAllFolders(folderPath);
 
         StoredFileDataModel currentData = LoadCurrentData(existingFiles, existingFolders);
+        HomeIndexResponseModel response = new();
 
-        // AI generated (copilot)
-        HomeIndexResponseModel response = new HomeIndexResponseModel
+        // New / Updated / Unchanged
+        foreach (var item in currentData.Items)
         {
-            Items = currentData.Items.Select(item => new HomeIndexResponseModel.HomeIndexResponseModelItem
+            var dataSnapshotItem = dataSnapshot.Items.FirstOrDefault(snapshotItem => snapshotItem.FilePath == item.FilePath);
+
+            FileStatusEnum fileStatus = dataSnapshotItem != null
+                ? (dataSnapshotItem.Md5Hash != item.Md5Hash ? FileStatusEnum.Updated : FileStatusEnum.Unchanged)
+                : FileStatusEnum.New;
+
+            item.Version = fileStatus == FileStatusEnum.Updated
+                ? dataSnapshotItem.Version + 1 
+                : dataSnapshotItem?.Version ?? 1;
+
+            response.Items.Add(new HomeIndexResponseModel.HomeIndexResponseModelItem
             {
-                FilePath = item.FilePath,
-                Md5Hash = item.Md5Hash,
+                Path = item.FilePath,
                 Version = item.Version,
-                FileStatus = dataSnapshot.Items.FirstOrDefault(snapshotItem => snapshotItem.FilePath == item.FilePath) switch
-                {
-                    null => FileStatusEnum.New, // New file or folder
-                    var snapshotItem when snapshotItem.IsFile && snapshotItem.Md5Hash != item.Md5Hash => FileStatusEnum.Updated, // Modified file
-                    var snapshotItem when !snapshotItem.IsFile && !item.IsFile => FileStatusEnum.Unchanged, // Unchanged folder
-                    _ => FileStatusEnum.Unchanged // Unchanged file or folder
-                }
-            }).ToList()
-        };
+                FileStatus = fileStatus
+            });
+        }
+
+        // Deleted
+        var currentPaths = currentData.Items.Select(item => item.FilePath).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var deletedItems = dataSnapshot.Items.Where(snapshotItem => !currentPaths.Contains(snapshotItem.FilePath)).ToList();
+
+        foreach (var deletedItem in deletedItems)
+        {
+            response.Items.Add(new HomeIndexResponseModel.HomeIndexResponseModelItem
+            {
+                Path = deletedItem.FilePath,
+                Version = deletedItem.Version,
+                FileStatus = FileStatusEnum.Deleted
+            });
+        }
 
         SaveFileSnapshot(currentData, currentConfig);
 
