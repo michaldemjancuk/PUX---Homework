@@ -5,18 +5,18 @@ using PuxHomework.Services;
 namespace PuxHomework.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("Home/")]
 public class HomeController(IFileComparerService fileComparerService) : ControllerBase
 {
     private readonly IFileComparerService _fileComparerService = fileComparerService;
 
-    [HttpGet(Name = "Index")]
+    [HttpGet("Index")]
     [ProducesResponseType(typeof(HomeIndexResponseModel), 200)]
     [ProducesResponseType(500)]
-    public HomeIndexResponseModel Get(string folderPath = "C:\\Temp\\")
+    public HomeIndexResponseModel Index(string folderPath = "C:\\Temp\\")
     {
         HomeIndexResponseModel result = _fileComparerService.CompareFiles(folderPath);
 
-        return new HomeIndexResponseModel();
+        return result;
     }
 }
