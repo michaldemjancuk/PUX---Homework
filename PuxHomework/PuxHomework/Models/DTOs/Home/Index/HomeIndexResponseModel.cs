@@ -9,8 +9,7 @@ public class HomeIndexResponseModel
 
     public class HomeIndexResponseModelItem
     {
-        public required string FilePath { get; set; } = string.Empty;
-        public required string Md5Hash { get; set; } = string.Empty;
+        public required string Path { get; set; } = string.Empty;
         public required FileStatusEnum FileStatus { get; set; } = FileStatusEnum.Unknown;
         public required int Version { get; set; } = -1;
     }
