@@ -59,11 +59,7 @@ public class FileComparerService(
                 FileStatus = fileStatus
             });
 
-            _logger.LogInformation(
-                "Processed path '{Path}' with status '{Status}' and version {Version}",
-                item.FilePath,
-                fileStatus,
-                item.Version);
+            _logger.LogDebug("Processed path '{Path}' with status '{Status}' and version {Version}", item.FilePath, fileStatus, item.Version);
         }
 
         // Deleted
@@ -84,10 +80,7 @@ public class FileComparerService(
                 FileStatus = FileStatusEnum.Deleted
             });
 
-            _logger.LogInformation(
-                "Detected deleted path '{Path}' with version {Version}",
-                deletedItem.FilePath,
-                deletedItem.Version);
+            _logger.LogDebug("Detected deleted path '{Path}' with version {Version}", deletedItem.FilePath, deletedItem.Version);
         }
 
         SaveFileSnapshot(currentData, currentConfig);
@@ -125,9 +118,7 @@ public class FileComparerService(
             });
         }
 
-        _logger.LogInformation(
-            "Current data model built with {ItemCount} items",
-            currentData.Items.Count);
+        _logger.LogInformation("Current data model built with {ItemCount} items", currentData.Items.Count);
 
         return currentData;
     }
@@ -136,13 +127,13 @@ public class FileComparerService(
     {
         if (string.IsNullOrWhiteSpace(folderPath))
         {
-            _logger.LogWarning("File comparison failed because folder path was empty");
+            _logger.LogError("File comparison failed because folder path was empty");
             throw new ArgumentException("Folder path cannot be null or whitespace.", nameof(folderPath));
         }
 
         if (!Directory.Exists(folderPath))
         {
-            _logger.LogWarning("File comparison failed because directory '{FolderPath}' was not found", folderPath);
+            _logger.LogError("File comparison failed because directory '{FolderPath}' was not found", folderPath);
             throw new DirectoryNotFoundException($"The specified folder path does not exist: {folderPath}");
         }
 
@@ -153,13 +144,13 @@ public class FileComparerService(
     {
         if (string.IsNullOrWhiteSpace(folderPath))
         {
-            _logger.LogWarning("Folder enumeration failed because folder path was empty");
+            _logger.LogError("Folder enumeration failed because folder path was empty");
             throw new ArgumentException("Folder path cannot be null or whitespace.", nameof(folderPath));
         }
 
         if (!Directory.Exists(folderPath))
         {
-            _logger.LogWarning("Folder enumeration failed because directory '{FolderPath}' was not found", folderPath);
+            _logger.LogError("Folder enumeration failed because directory '{FolderPath}' was not found", folderPath);
             throw new DirectoryNotFoundException($"The specified folder path does not exist: {folderPath}");
         }
 
@@ -182,7 +173,7 @@ public class FileComparerService(
         var fileContent = File.ReadAllText(filePath);
         var storedFileData = System.Text.Json.JsonSerializer.Deserialize<StoredFileDataModel>(fileContent);
 
-        _logger.LogInformation("Snapshot file '{SnapshotFilePath}' loaded", filePath);
+        _logger.LogDebug("Snapshot file '{SnapshotFilePath}' loaded", filePath);
 
         return storedFileData ?? new StoredFileDataModel();
     }
