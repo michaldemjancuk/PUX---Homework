@@ -1,0 +1,46 @@
+{
+  "Items": [
+    {
+      "FilePath": "C:\\Temp\\ProjectTest\\changing.txt",
+      "Md5Hash": "c06db68e819be6ec3d26c6038d8e8d1f",
+      "Version": 5,
+      "IsFile": true
+    },
+    {
+      "FilePath": "C:\\Temp\\ProjectTest\\empty.txt",
+      "Md5Hash": "d41d8cd98f00b204e9800998ecf8427e",
+      "Version": 1,
+      "IsFile": true
+    },
+    {
+      "FilePath": "C:\\Temp\\ProjectTest\\1\\1.txt",
+      "Md5Hash": "c4ca4238a0b923820dcc509a6f75849b",
+      "Version": 1,
+      "IsFile": true
+    },
+    {
+      "FilePath": "C:\\Temp\\ProjectTest\\1\\1\\11.txt",
+      "Md5Hash": "6512bd43d9caa6e02c990b0a82652dca",
+      "Version": 1,
+      "IsFile": true
+    },
+    {
+      "FilePath": "C:\\Temp\\ProjectTest\\1",
+      "Md5Hash": "",
+      "Version": 1,
+      "IsFile": false
+    },
+    {
+      "FilePath": "C:\\Temp\\ProjectTest\\2",
+      "Md5Hash": "",
+      "Version": 1,
+      "IsFile": false
+    },
+    {
+      "FilePath": "C:\\Temp\\ProjectTest\\1\\1",
+      "Md5Hash": "",
+      "Version": 1,
+      "IsFile": false
+    }
+  ]
+}
